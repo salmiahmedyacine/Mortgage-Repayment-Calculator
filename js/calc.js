@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalRepaymentOutput = document.querySelector(".Complete .box-resuld h3:last-of-type");
   const requiredP = document.querySelectorAll(".requiredP");
   const redErrors = document.querySelectorAll(".RedError");
+  const form_flex = document.querySelectorAll(".form-flex");
 
-  // Function to calculate mortgage repayments
   function calculateRepayments(amount, term, rate, isInterestOnly) {
     const monthlyRate = rate / 100 / 12;
     const numberOfPayments = term * 12;
@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // Form submission handler
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -40,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       redError.style.background = "";
       redError.style.color = "";
     });
+    form_flex.forEach(flex => flex.style.border = "");
 
     const amount = parseFloat(mortgageAmountInput.value);
     const term = parseInt(mortgageTermInput.value);
@@ -54,18 +54,21 @@ document.addEventListener("DOMContentLoaded", () => {
       requiredP[0].style.display = "block";
       redErrors[0].style.background = "var(--Red)";
       redErrors[0].style.color = "var(--White)";
+      form_flex[0].style.border = "1px solid var(--Red)";
       isValid = false;
     }
     if (isNaN(term) || term <= 0) {
       requiredP[1].style.display = "block";
       redErrors[1].style.background = "var(--Red)";
       redErrors[1].style.color = "var(--White)";
+      form_flex[1].style.border = "1px solid var(--Red)";
       isValid = false;
     }
     if (isNaN(rate) || rate <= 0) {
       requiredP[2].style.display = "block";
       redErrors[2].style.background = "var(--Red)";
       redErrors[2].style.color = "var(--White)";
+      form_flex[2].style.border = "1px solid var(--Red)";
       isValid = false;
     }
     if (!mortgageTypeInput) {
@@ -73,10 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
       isValid = false;
     }
 
-    // If valid, calculate and display results
     if (isValid) {
       const { monthlyRepayment, totalRepayment } = calculateRepayments(amount, term, rate, isInterestOnly);
-
       monthlyRepaymentOutput.textContent = `£${monthlyRepayment}`;
       totalRepaymentOutput.textContent = `£${totalRepayment}`;
       resultEmpty.style.display = "none";
@@ -84,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Clear all inputs and reset results
   document.querySelector(".header p").addEventListener("click", () => {
     form.reset();
     resultEmpty.style.display = "flex";
@@ -94,9 +94,9 @@ document.addEventListener("DOMContentLoaded", () => {
       redError.style.background = "";
       redError.style.color = "";
     });
+    form_flex.forEach(flex => flex.style.border = "");
   });
 
-  // Change background color when mortgage type is selected
   const setMortgageTypeStyles = (mortgageType, type) => {
     mortgageType.addEventListener("click", () => {
       type.style.background = "var(--Lime-btn)";
